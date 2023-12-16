@@ -10,6 +10,7 @@ def main():
     try:
         server.bind(('localhost', 7777))
         server.listen()
+        print("Servidor iniciado")
     except:
         return print('\nNão foi possível iniciar o servidor!\n')
 
@@ -21,10 +22,15 @@ def main():
         thread.start()
 
 def messagesTreatment(client):
+    end = "/sair"
     while True:
         try:
             msg = client.recv(2048)
+            accept_msg = msg.decode('utf-8')
+            if end in accept_msg:             # servidor faz a Confirmação de desconexão do cliente
+                return print("Cliente foi desconectado")
             broadcast(msg, client)
+            print(accept_msg)
         except:
             deleteClient(client)
             break

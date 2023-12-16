@@ -8,13 +8,13 @@ def main():
 
     try:
         client.connect(('localhost', 7777))
-        print("rodando na porta 7777")
-        print("\n Digite /Sair para sair do chat")
     except:
         return print('\nNão foi possívvel se conectar ao servidor!\n')
 
-    username = input('Digite seu Nome de Usuário> ')
-    print(f'\n {username} Entrou no chat')
+    username = input('Digite o Nome Do Usuário> ')
+    print('\nConectado')
+    print('\nDigite /sair para desconectar')
+    
 
     thread1 = threading.Thread(target=receiveMessages, args=[client])
     thread2 = threading.Thread(target=sendMessages, args=[client, username])
@@ -35,17 +35,17 @@ def receiveMessages(client):
             break
 
 
-def sendMessages(client, username): 
+def sendMessages(client, username):
     while True:
         try:
             msg = input('\n')
-            if msg == "/fim":
-                client.close()
-                return print(f" Conexão encerrada, vc saiu do chat")
             client.send(f'<{username}> {msg}'.encode('utf-8'))
-            
-            
+            if msg == "/sair":    # requisição para sair do chat , cliente manda "/sair"
+                client.send(f'<{username}> {msg}'.encode('utf-8')) 
+                client.close()
+                return print("Você saiu do chat")
         except:
             return
+
 
 main()
