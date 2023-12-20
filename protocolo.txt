@@ -1,0 +1,33 @@
+---------------------------------------------------
+               DOCUMENTAÇÃO DE COMANDOS
+---------------------------------------------------
+
+1. **Comando: /sair**
+   - Parâmetros: Nenhum
+   - Descrição: Desconecta o cliente do chat.
+
+2. **Comando: /listar_usuarios**
+   - Parâmetros: Nenhum
+   - Descrição: Solicita ao servidor a lista de usuários online.
+
+3. **Comando: /contar_usuarios**
+   - Parâmetros: Nenhum
+   - Descrição: Solicita ao servidor o total de usuários e a lista de usuários online.
+
+4. **Comando: /limpar_chat**
+   - Parâmetros: Nenhum
+   - Descrição: Limpa todas as mensagens do histórico do chat.
+
+5. **Comando: /remove_all**
+   - Parâmetros: Nenhum
+   - Descrição: Desconecta e remove todos os usuários conectados ao servidor.
+
+6. **Comando: /users**
+   - Parâmetros: Nenhum
+   - Descrição: Retorna a quantidade total de usuários e a lista de usuários online no servidor.
+
+7. **Comando: [Mensagem Normal]**
+   - Parâmetros: Texto da mensagem
+   - Descrição: Envia uma mensagem de texto normal para todos os usuários no chat.
+
+---------------------------------------------------
