@@ -1,6 +1,6 @@
 ### <h1>Chat em Python com Socket</h1>
 ### Autores
-Sheila lee, Anderson Sousa
+Anderson Sousa, Sheila lee
 ### Disciplinas
 Protocolos de intercomunicações de Redes e Computadores - PIRC
 ### Descrição do Problema
