@@ -6,6 +6,15 @@ Protocolos de intercomunicações de Redes e Computadores - PIRC
 ### Descrição do Problema
 O projeto consiste em um chat simples implementado em Python utilizando sockets. Permite que os clientes se conectem a um servidor e troquem mensagens em tempo real, demonstrando a comunicação básica entre cliente e servidor por meio de sockets.
 
+### Objetivo 
+
+Servir como um chat local seguro, entre usuarios da rede , facilitando um acesso rapido (local) em 
+ambientes corporativos
+
+
+
+
+
 ### Arquivos do Projeto
 1. cliente.py
 ###  Implementação do cliente para o chat.
@@ -28,6 +37,15 @@ Uso de um protocolo próprio, definindo as próprias mensagens a serem trocadas 
 
 <p>• Ajuste as configurações de host e porta nos arquivos cliente.py e servidor.py. </p>
 <p>• Certifique-se de que as portas utilizadas estejam disponíveis e acessíveis em sua rede local. </p>
+
+
+### Proximos updates 
+
+<p>• Adcionar interface grafica </p>
+<p>• Permitir chat em grupo com dispositos em uma mesma rede </p>
+
+
+
 
 
 
