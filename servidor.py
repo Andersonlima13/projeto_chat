@@ -41,10 +41,9 @@ def messagesTreatment(client):
             msg = client.recv(2048).decode('utf-8')
 
             if "/sair" in msg:
-                # Se a mensagem for "/sair", desconecta o cliente
                 client.close()
                 deleteClient(client)
-                return print("Cliente foi desconectado")
+                return print(f"Cliente {client.getpeername} foi desconectado")
 
             elif "/listar_usuarios" in msg:
                 # Envia a lista de usuários online ao cliente que solicitou
@@ -91,16 +90,52 @@ def serverInput():
             elif msg == "/users":
                 # Retorna a quantidade e a lista de usuários conectados
                 count_users = len(clients)
-                online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
+                online_users = ", ".join([f"{c.getsockname()[0]}" for c in clients])
                 response = f"Total de Usuários (Servidor): {count_users}\nUsuários Online: {online_users}"
+                print(online_users)
                 print(response)
                 
             else:
                 # Transmite a mensagem para todos os clientes conectados
                 broadcast(f"Servidor: {msg}", None)
         except KeyboardInterrupt:
+            server.close()
+            client.close()
+            print("Ocorreu um erro inesperado no servidor")
             # Trata a interrupção do teclado (Ctrl+C)
             break
+
+
+
+# Escuta as mensagens trocadas pelos clientes
+def listen_client():
+    while True:
+        try:
+            # Recebe e decodifica a mensagem do servidor
+            msg = client.recv(2048).decode('utf-8')
+            print(msg+'\n')
+        except:
+            # Trata a exceção se não for possível permanecer conectado
+            print('\nNão foi possível permanecer conectado no servidor!\n')
+            print('Pressione <Enter> Para continuar...')
+            client.close()
+            break
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def remove_all_clients():
     # Função para desconectar e remover todos os clientes da lista
