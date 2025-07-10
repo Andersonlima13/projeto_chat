@@ -10,7 +10,7 @@ def main():
 
     try:
         # Associa o servidor à porta 7777 e inicia a escuta
-        server.bind(('localhost', 7777))
+        server.bind(('localhost', 7778))
         server.listen()
         print("Servidor iniciado")
         print("\n-------------COMANDOS--------")
@@ -58,16 +58,13 @@ def messagesTreatment(client):
             msg = client.recv(2048).decode('utf-8')
 
             if "/sair" in msg:
+                print(f"Cliente {client.getpeername} foi desconectado")
                 client.close()
                 deleteClient(client)
-                return print(f"Cliente {client.getpeername} foi desconectado")
+                break
 
             elif "/listar_usuarios" in msg:
-                # Envia a lista de usuários online ao cliente que solicitou
-                online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
-                response = f"Usuários Online: {online_users}"
-                client.send(response.encode('utf-8'))
-                
+                get_users(client)
             elif "/help" in msg:
                 return help()
                 
@@ -84,7 +81,11 @@ def messagesTreatment(client):
 
 
 
-
+def get_users(client):
+    online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
+    response = f"Usuários Online: {online_users}"
+    client.send(response.encode('utf-8'))
+    
 
 
 def left(client):
@@ -107,6 +108,9 @@ def list(client):
                 client.send(response.encode('utf-8'))
         except:
             break
+        
+        
+        
 def private(client,username):
     pass
 

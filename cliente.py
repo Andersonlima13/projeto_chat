@@ -12,7 +12,6 @@ import re
 
 
 
-    
 
 def validate_username(username):
     pattern = r'^[A-Za-z]\w{4,14}$'
@@ -33,27 +32,6 @@ def set_username():
         return set_username()
 
 
-def main():
-    # Criação do socket do cliente
-    username = set_username()
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        # Conexão do cliente ao servidor na porta 7777
-        client.connect(('localhost', 7777))
-    except:
-        # Trata a exceção se a conexão não for bem-sucedida
-        return print('\nNão foi possível se conectar ao servidor!\n')
-
-    # Solicitação do nome de usuário ao cliente
-    print('\nDigite /sair para desconectar')
-    print('Digite /listar_usuarios para obter a lista de usuários online')
-
-    # Inicia duas threads: uma para receber mensagens e outra para enviar mensagens
-    thread1 = threading.Thread(target=receiveMessages, args=[client])
-    thread2 = threading.Thread(target=sendMessages, args=[client, username])
-    thread1.start()
-    thread2.start()
 
 
 
@@ -72,12 +50,15 @@ def receiveMessages(client):
             break
 
 
+
+
 def sendMessages(client, username):
     # Função para enviar mensagens para o servidor
     while True:
+            
         try:
             # Solicitação da mensagem do usuário
-            msg = input(f'Você: ')
+            msg = input(f'Você: ')          
             if msg == "/sair":
                 # Envia mensagem de desconexão ao servidor
                 client.send(f'<{username}> {msg}'.encode('utf-8'))    # Nao precisa disso aqui !!!!
@@ -88,13 +69,38 @@ def sendMessages(client, username):
                 client.send(msg.encode('utf-8'))
             else:
                 # Envia a mensagem normalmente ao servidor
-                client.send(f'<{username}> {msg}'.encode('utf-8'))
+             client.send(f'<{username}> {msg}'.encode('utf-8'))
         except:
             # Trata a exceção se ocorrer um erro durante o envio da mensagem
             return
+ 
         
         
         
+        
+        
+        
+def main():
+    # Criação do socket do cliente
+    username = set_username()
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+        # Conexão do cliente ao servidor na porta 7777
+        client.connect(('localhost', 7778))
+    except:
+        # Trata a exceção se a conexão não for bem-sucedida
+        return print('\nNão foi possível se conectar ao servidor!\n')
+
+    # Solicitação do nome de usuário ao cliente
+    print('\nDigite /sair para desconectar')
+    print('Digite /listar_usuarios para obter a lista de usuários online')
+
+    # Inicia duas threads: uma para receber mensagens e outra para enviar mensagens
+    thread1 = threading.Thread(target=receiveMessages, args=[client])
+    thread2 = threading.Thread(target=sendMessages, args=[client, username])
+    thread1.start()
+    thread2.start()
         
         
 
