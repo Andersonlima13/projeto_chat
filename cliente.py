@@ -5,6 +5,15 @@ import re
 
 
 
+
+
+# funções que podem ser usadas pelo cliente
+
+
+
+
+    
+
 def validate_username(username):
     pattern = r'^[A-Za-z]\w{4,14}$'
     if re.match(pattern, username):
@@ -71,7 +80,7 @@ def sendMessages(client, username):
             msg = input(f'Você: ')
             if msg == "/sair":
                 # Envia mensagem de desconexão ao servidor
-                client.send(f'<{username}> {msg}'.encode('utf-8'))
+                client.send(f'<{username}> {msg}'.encode('utf-8'))    # Nao precisa disso aqui !!!!
                 client.close()
                 return print("Você saiu do chat")
             elif msg == "/listar_usuarios":
@@ -83,5 +92,15 @@ def sendMessages(client, username):
         except:
             # Trata a exceção se ocorrer um erro durante o envio da mensagem
             return
+        
+        
+        
+        
+        
+
+      
+        
+        
+        
 
 main()

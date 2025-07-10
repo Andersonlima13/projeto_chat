@@ -33,6 +33,23 @@ def main():
         thread = threading.Thread(target=messagesTreatment, args=[client])
         thread.start()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def messagesTreatment(client):
     # Função para tratar as mensagens recebidas do cliente
     while True:
@@ -50,16 +67,70 @@ def messagesTreatment(client):
                 online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
                 response = f"Usuários Online: {online_users}"
                 client.send(response.encode('utf-8'))
+                
+            elif "/help" in msg:
+                return help()
+                
+
 
             else:
                 # Transmite a mensagem para todos os clientes conectados
                 broadcast(msg, client)
                 print(msg)
-
         except:
             # Se ocorrer um erro, remove o cliente da lista e encerra o loop
             deleteClient(client)
             break
+
+
+
+
+
+
+def left(client):
+    while True:
+        try:
+            msg = client.recv(2048).decode('utf-8')
+            if "/left" in msg:
+                client.close()
+                deleteClient(client)
+                return print(f"Cliente {client.getpeername} foi desconectado")
+        except:
+            break
+def list(client):
+    while True:
+        try:
+            msg = client.recv(2048).decode('utf-8')
+            if "/list" in msg:
+                online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
+                response = f"Usuários Online: {online_users}"
+                client.send(response.encode('utf-8'))
+        except:
+            break
+def private(client,username):
+    pass
+
+
+def help():
+     print("\n----------------------------------------------------------------------")
+     print("LISTA DE COMANDOS")
+     print("/help -> Lista Todos Os Comandos")
+     print("/private 'Nomedouser'-> Permite mandar mensagens privadas para um usuário ")
+     print("/left -> Sair do chat")
+     
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 def broadcast(msg, client):
     # Função para enviar mensagens para todos os clientes, exceto o remetente
@@ -76,7 +147,14 @@ def deleteClient(client):
     # Função para remover um cliente da lista
     clients.remove(client)
 
+
+
+
+
 # Função para leitura de mensagens do servidor
+
+
+
 def serverInput():
     while True:
         try:
@@ -104,6 +182,9 @@ def serverInput():
             print("Ocorreu um erro inesperado no servidor")
             # Trata a interrupção do teclado (Ctrl+C)
             break
+
+
+
 
 
 
