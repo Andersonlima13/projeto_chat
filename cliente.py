@@ -52,27 +52,38 @@ def receiveMessages(client):
 
 
 
+
+commands_message = ['/sair','listar_usuarios','/print']
+      
+def message(client, msg):
+    if msg == '/sair':
+        client.send(msg.encode('utf-8'))
+        client.close()
+        print("Você saiu do chat.")
+        exit()
+    elif msg == '/listar_usuarios':
+        client.send(msg.encode('utf-8'))
+    elif msg == '/help':
+        client.send(msg.encode('utf-8'))
+   
+  
+    
 def sendMessages(client, username):
-    # Função para enviar mensagens para o servidor
     while True:
-            
         try:
-            # Solicitação da mensagem do usuário
-            msg = input(f'Você: ')          
-            if msg == "/sair":
-                # Envia mensagem de desconexão ao servidor
-                client.send(f'<{username}> {msg}'.encode('utf-8'))    # Nao precisa disso aqui !!!!
-                client.close()
-                return print("Você saiu do chat")
-            elif msg == "/listar_usuarios":
-                # Envia solicitação de listar usuários online ao servidor
-                client.send(msg.encode('utf-8'))
+            msg = input(f'{username}: ').strip()
+            if msg in commands_message:
+                message(client, msg)  # Executa a função para lidar com o comando
             else:
-                # Envia a mensagem normalmente ao servidor
-             client.send(f'<{username}> {msg}'.encode('utf-8'))
-        except:
-            # Trata a exceção se ocorrer um erro durante o envio da mensagem
-            return
+                client.send(f'<{username}> {msg}'.encode('utf-8'))
+        except (KeyboardInterrupt, EOFError):
+            print("\nEncerrando cliente...")
+            client.close()
+            break
+        except Exception as e:
+            print(f"[Erro]: {e}")
+            client.close()
+            break
  
         
         
@@ -96,9 +107,12 @@ def main():
     print('\nDigite /sair para desconectar')
     print('Digite /listar_usuarios para obter a lista de usuários online')
 
-    # Inicia duas threads: uma para receber mensagens e outra para enviar mensagens
-    thread1 = threading.Thread(target=receiveMessages, args=[client])
-    thread2 = threading.Thread(target=sendMessages, args=[client, username])
+
+
+
+
+    thread1 = threading.Thread(target=receiveMessages, args=[client]) # Thread para escutar mensagens 
+    thread2 = threading.Thread(target=sendMessages, args=[client, username]) # Thread para enviar mensagens
     thread1.start()
     thread2.start()
         

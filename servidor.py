@@ -66,7 +66,8 @@ def messagesTreatment(client):
             elif "/listar_usuarios" in msg:
                 get_users(client)
             elif "/help" in msg:
-                return help()
+                HELP = help()
+                client.send(HELP.encode('utf-8'))
                 
 
 
@@ -116,13 +117,15 @@ def private(client,username):
 
 
 def help():
-     print("\n----------------------------------------------------------------------")
-     print("LISTA DE COMANDOS")
-     print("/help -> Lista Todos Os Comandos")
-     print("/private 'Nomedouser'-> Permite mandar mensagens privadas para um usuário ")
-     print("/left -> Sair do chat")
-     
-    
+    return (
+        "\n---------------------- AJUDA ----------------------\n"
+        "/help               - Lista todos os comandos\n"
+        "/private <usuário>  - Envia mensagem privada\n"
+        "/left               - Sair do chat\n"
+        "/listar_usuarios    - Lista os usuários conectados\n"
+        "---------------------------------------------------\n"
+    )
+
 
 
 
