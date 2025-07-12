@@ -68,9 +68,6 @@ def messagesTreatment(client):
             elif "/help" in msg:
                 HELP = help()
                 client.send(HELP.encode('utf-8'))
-                
-
-
             else:
                 # Transmite a mensagem para todos os clientes conectados
                 broadcast(msg, client)
@@ -81,35 +78,15 @@ def messagesTreatment(client):
             break
 
 
-
+# faz um get de usuarios
 def get_users(client):
-    online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
-    response = f"Usuários Online: {online_users}"
+    count_users = len(clients)
+    online_users = ", ".join([f"{c.getsockname()[0]}" for c in clients])
+    response = f"Total de Usuários: {count_users}\nUsuários Online: {online_users}"
+    print(online_users)
+    print(response)    
     client.send(response.encode('utf-8'))
     
-
-
-def left(client):
-    while True:
-        try:
-            msg = client.recv(2048).decode('utf-8')
-            if "/left" in msg:
-                client.close()
-                deleteClient(client)
-                return print(f"Cliente {client.getpeername} foi desconectado")
-        except:
-            break
-def list(client):
-    while True:
-        try:
-            msg = client.recv(2048).decode('utf-8')
-            if "/list" in msg:
-                online_users = ", ".join([f"{c.getpeername()[0]}" for c in clients])
-                response = f"Usuários Online: {online_users}"
-                client.send(response.encode('utf-8'))
-        except:
-            break
-        
         
         
 def private(client,username):
@@ -172,14 +149,8 @@ def serverInput():
                 remove_all_clients()
                 print("Todos os usuários foram removidos.")
                 
-            elif msg == "/users":
-                # Retorna a quantidade e a lista de usuários conectados
-                count_users = len(clients)
-                online_users = ", ".join([f"{c.getsockname()[0]}" for c in clients])
-                response = f"Total de Usuários (Servidor): {count_users}\nUsuários Online: {online_users}"
-                print(online_users)
-                print(response)
-                
+            elif "/listar_usuarios" in msg:
+                get_users(client)             
             else:
                 # Transmite a mensagem para todos os clientes conectados
                 broadcast(f"Servidor: {msg}", None)
@@ -214,22 +185,10 @@ def listen_client():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 def remove_all_clients():
     # Função para desconectar e remover todos os clientes da lista
     for client in clients:
         client.close()
     clients.clear()
 
-# Inicia a execução do servidor
 main()

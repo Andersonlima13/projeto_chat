@@ -7,11 +7,12 @@ import re
 
 
 
+
+# array que guarda os comandos que podem ser usados pelo usuario
+commands_message = ['/sair','listar_usuarios','/print']
+
+
 # funções que podem ser usadas pelo cliente
-
-
-
-
 
 def validate_username(username):
     pattern = r'^[A-Za-z]\w{4,14}$'
@@ -53,8 +54,7 @@ def receiveMessages(client):
 
 
 
-commands_message = ['/sair','listar_usuarios','/print']
-      
+# funçao que verifica qual comando foi usado pelo usuario  
 def message(client, msg):
     if msg == '/sair':
         client.send(msg.encode('utf-8'))
@@ -66,8 +66,8 @@ def message(client, msg):
     elif msg == '/help':
         client.send(msg.encode('utf-8'))
    
-  
-    
+     
+      
 def sendMessages(client, username):
     while True:
         try:
@@ -115,12 +115,4 @@ def main():
     thread2 = threading.Thread(target=sendMessages, args=[client, username]) # Thread para enviar mensagens
     thread1.start()
     thread2.start()
-        
-        
-
-      
-        
-        
-        
-
 main()
