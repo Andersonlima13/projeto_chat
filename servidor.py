@@ -1,8 +1,10 @@
 import threading
 import socket
 
+
 # Lista para armazenar os clientes conectados
 clients = []
+usernames = {}
 
 def main():
     # Criação do socket do servidor
@@ -25,9 +27,10 @@ def main():
     thread_server_input.start()
 
     while True:
-        # Aceita a conexão do cliente
-        client, addr = server.accept()
+        client, addr = server.accept()  # Aceita a conexão do cliente
         clients.append(client)
+        username = client.recv(2048).decode('utf-8')
+        usernames[client] = username
 
         # Inicia uma thread para tratar as mensagens do cliente
         thread = threading.Thread(target=messagesTreatment, args=[client])
@@ -51,6 +54,7 @@ def main():
 
 
 def messagesTreatment(client):
+    username = usernames.get(client)
     # Função para tratar as mensagens recebidas do cliente
     while True:
         try:
@@ -58,13 +62,15 @@ def messagesTreatment(client):
             msg = client.recv(2048).decode('utf-8')
 
             if "/sair" in msg:
-                print(f"Cliente {client.getpeername} foi desconectado")
+                print(f"{username} Foi desconectado")
                 client.close()
                 deleteClient(client)
+                broadcast(f"{username} Saiu do chat",client)
                 break
 
+
             elif "/listar_usuarios" in msg:
-                get_users(client)
+                get_online_users(client)
             elif "/help" in msg:
                 HELP = help()
                 client.send(HELP.encode('utf-8'))
@@ -79,15 +85,12 @@ def messagesTreatment(client):
 
 
 # faz um get de usuarios
-def get_users(client):
+def get_online_users(client):
     count_users = len(clients)
-    online_users = ", ".join([f"{c.getsockname()[0]}" for c in clients])
+    online_users = ", ".join(usernames[c] for c in clients)
     response = f"Total de Usuários: {count_users}\nUsuários Online: {online_users}"
-    print(online_users)
-    print(response)    
     client.send(response.encode('utf-8'))
     
-        
         
 def private(client,username):
     pass
@@ -127,9 +130,14 @@ def broadcast(msg, client):
                 # Se ocorrer um erro ao enviar, remove o cliente da lista
                 deleteClient(clientItem)
 
+
+
+
 def deleteClient(client):
     # Função para remover um cliente da lista
-    clients.remove(client)
+      clients.remove(client)
+      usernames.pop(client,None)
+      client.close()
 
 
 
@@ -150,7 +158,7 @@ def serverInput():
                 print("Todos os usuários foram removidos.")
                 
             elif "/listar_usuarios" in msg:
-                get_users(client)             
+                get_online_users(client)             
             else:
                 # Transmite a mensagem para todos os clientes conectados
                 broadcast(f"Servidor: {msg}", None)

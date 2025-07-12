@@ -31,10 +31,11 @@ def set_username():
     except Exception as e:
         print(f"\nErro ao definir o nome de usuário: {e}\n")
         return set_username()
-
-
-
-
+    
+def get_username(username):
+    username = set_username()
+    return username
+    
 
 def receiveMessages(client):
     # Função para receber mensagens do servidor
@@ -57,10 +58,10 @@ def receiveMessages(client):
 # funçao que verifica qual comando foi usado pelo usuario  
 def message(client, msg):
     if msg == '/sair':
-        client.send(msg.encode('utf-8'))
+        client.send(msg.encode('utf-8'))   # Mensagem de broadcast avisando que o usuario saiu da conversa
         client.close()
-        print("Você saiu do chat.")
         exit()
+        return print("Você saiu da conversa")
     elif msg == '/listar_usuarios':
         client.send(msg.encode('utf-8'))
     elif msg == '/help':
@@ -98,7 +99,9 @@ def main():
 
     try:
         # Conexão do cliente ao servidor na porta 7777
+        
         client.connect(('localhost', 7778))
+        client.send(username.encode('utf-8'))
     except:
         # Trata a exceção se a conexão não for bem-sucedida
         return print('\nNão foi possível se conectar ao servidor!\n')
