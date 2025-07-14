@@ -72,11 +72,11 @@ def message(client, msg):
 def sendMessages(client, username):
     while True:
         try:
-            msg = input(f'{username}: ').strip()
+            msg = input(f'\n{username}: ').strip()
             if msg in commands_message:
                 message(client, msg)  # Executa a função para lidar com o comando
             else:
-                client.send(f'<{username}> {msg}'.encode('utf-8'))
+                client.send(f'\n <{username}> {msg}'.encode('utf-8'))
         except (KeyboardInterrupt, EOFError):
             print("\nEncerrando cliente...")
             client.close()
@@ -98,12 +98,9 @@ def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
-        # Conexão do cliente ao servidor na porta 7777
-        
         client.connect(('localhost', 7778))
         client.send(username.encode('utf-8'))
     except:
-        # Trata a exceção se a conexão não for bem-sucedida
         return print('\nNão foi possível se conectar ao servidor!\n')
 
     # Solicitação do nome de usuário ao cliente
