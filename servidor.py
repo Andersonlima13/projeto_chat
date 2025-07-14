@@ -35,7 +35,8 @@ def main():
         # Inicia uma thread para tratar as mensagens do cliente
         thread = threading.Thread(target=messagesTreatment, args=[client])
         thread.start()
-
+        print(f"{username} Conectado ao servidor")
+        broadcast(f"\n{username} Entrou No Chat\n",client)
 
 
 
@@ -62,7 +63,7 @@ def messagesTreatment(client):
             msg = client.recv(2048).decode('utf-8')
 
             if "/sair" in msg:
-                print(f"{username} Foi desconectado")
+                print(f"{username} Desconectado do servidor")
                 client.close()
                 deleteClient(client)
                 broadcast(f"{username} Saiu do chat",client)
